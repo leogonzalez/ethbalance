@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="./web3.js"></script>
+    <script type="text/javascript">
+
+      var Web3 = require('web3');
+
+      window.addEventListener('load',function () {
+        if (typeof web3!=='undefined') {
+          console.log('Web3 detected! '+web3.currentProvider.constructor.name);
+          window.web3 = new Web3(web3.currentProvider);
+        } else {
+          console.log('No web3');
+          window.web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/X5DO1iFGxFkXcoDg5hDL'));
+        }
+      });
+
+      function getBalance() {
+        var address, wei, balance;
+        address = document.getElementById('address');
+        try {
+          web3.eth.getBalance(address,function (error,wei) {
+            if (!error) {
+              var balance =  web3.fromWei(wei,'ether');
+              document.getElementById('output').innerHTML = balance + " ETH";
+            }
+          });
+        } catch (e) {
+          document.getElementById('output').innerHTML = e.message;
+        }
+      }
+    </script>
+
+  <!-- Load and set up web3 -->
+  <!-- Connect to HTTP Provider -->
+  <!-- getBalance function -->
+    <title>ETH Balance</title>
+  </head>
+  <body>
+    <h1>ETH Balance Fetcher</h1>
+    <p>Enter your Ethereum Address</p>
+    <input type="text" size="50" id="address"/>
+    <button type="button" onclick="getBalance()">Get Balance</button>
+    <br>
+    <br>
+    <div id="output">
+
+    </div>
+  </body>
+</html>
